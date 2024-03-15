@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RANDOM-SHOTI-MARJHUN</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: darkgrey; 
+      color: #ffffff;
+      line-height: 1.6;
+    }
+
+
+    #title {
+      text-align: center;
+      margin: 30px 0;
+      font-size: 40px;
+      color: #8e44ad;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 0 0 0 #8e44ad, 0 0 5px #8e44ad, 0 0 10px #8e44ad, 0 0 15px #8e44ad, 0 0 20px #8e44ad, 0 0 25px #8e44ad; 
+    }
+
+
+    #video-container {
+      max-width: 800px;
+      width: 90%;
+      margin: auto;
+      margin-top: 20px;
+      background: #1a1a1a;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 5px solid #8e44ad;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    #video-controls {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    #video-controls button {
+      background-color: #8e44ad;
+      color: #ffffff;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 10px 20px;
+      margin: 0 10px;
+      transition: background-color 0.3s;
+    }
+
+    #video-controls button:hover {
+      background-color: #6c3483;
+    }
+
+    #footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    @media only screen and (max-width: 600px) {
+      #video-container {
+        width: 100%;
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1 id="title">SHOTI WEB</h1>
+
+  <div id="video-container">
+    <video id="video" controls autoplay></video>
+  </div>
+
+  <div id="video-controls">
+    <button id="next-button">Next &#9654;</button>
+    <button id="fullscreen-button">&#x26F6; Fullscreen</button>
+  </div>
+
+  <div id="footer">
+    Created by MARJHUN BAYLON
+  </div>
+
+  <script>
+    async function getRandomVideo() {
+      try {
+        const url = 'https://shoti-server-v2.onrender.com/api/v1/get';
+        const rawResponse = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ apikey: "shoti-1hgn30msgapp542i0qg" })
+        });
+        const content = await rawResponse.json();
+        document.getElementById('video').src = content.data.url;
+      } catch (e) {
+        console.error("Error fetching Shoti video", e);
+      }
+    }
+
+    getRandomVideo();
+
+    document.getElementById('next-button').addEventListener('click', () => {
+      getRandomVideo();
+    });
+
+    document.getElementById('video').addEventListener('ended', () => {
+      getRandomVideo();
+    });
+
+    const video = document.getElementById('video');
+    const fullscreenButton = document.getElementById('fullscreen-button');
+
+    fullscreenButton.addEventListener('click', () => {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.mozRequestFullScreen) {
+        video.mozRequestFullScreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+      } else if (video.msRequestFullscreen) {
+        video.msRequestFullscreen();
+      }
+    });
+  </script>
+</body>
+</html>
